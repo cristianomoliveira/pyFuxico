@@ -6,10 +6,12 @@ from selenium.webdriver.support import expected_conditions as ec
 import scrapy
 import requests
 from bs4 import BeautifulSoup
+import csv
 
 url = 'https://capricho.abril.com.br/moda/'
 
 class bot(scrapy.Spider):
+
 
 
     #coletando os links
@@ -35,6 +37,9 @@ class bot(scrapy.Spider):
     start_urls = lista
 
     def parse(self, response):
+        # iniciando arquivo
+        f = csv.writer(open('dados/texto.csv', 'a'), delimiter=';')
+        #f.writerow(['Título', 'Texto'])
         p = ''
         titulo = response.css('title::text')[0].extract()
         paragrafos = response.css('section.article-content p::text').extract()
@@ -46,6 +51,10 @@ class bot(scrapy.Spider):
 
         print('o texto é:')
         print(p)
+
+        #salvando no arquivo
+        f.writerow([titulo, p])
+
 
 
 
